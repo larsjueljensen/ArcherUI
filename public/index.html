@@ -1,65 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Archer UI Showcase</title>
+    <title>Cardfan - Archer UI Showcase</title>
     <style>
-        :root {
-            --cards-left: 15vw;
-            --cards-top: 5%;
+        @font-face {
+            font-family:"adorn-engraved";
+            src:url("/assets/adorn-font.woff2") format("woff2"),url("/assets/adorn-font.woff") format("woff"),url("/assets/adorn-font.ot") format("opentype");
+            font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
         }
 
-        html, body { width: 100%; height: 100%; overflow: hidden; padding: 0; margin: 0; }
-        archer-card { position: absolute; top: var(--cards-top) }
-        archer-card:nth-child(1) {
-            left: var(--cards-left);
-            transform: rotate(-15deg);
-        }
-        archer-card:nth-child(2) {
-            left: calc(var(--cards-left) + 50px);
-            transform: rotate(-7.5deg);
-        }
-        archer-card:nth-child(3) {
-            left: calc(var(--cards-left) + 100px);
-            transform: rotate(7.5deg);
-            top: calc(var(--cards-top) + 7px);
-        }
-        archer-card:nth-child(4) {
-            left: calc(var(--cards-left) + 150px);
-            transform: rotate(15deg);
-            top: calc(var(--cards-top) + 17px);
+        html, body { width: 100%; height: 100%; padding: 0; margin: 0; }
+
+        body {
+            background: rgb(91,89,122);
+            background: linear-gradient(315deg, rgba(91,89,122,1) 0%, rgba(131,219,119,1) 47%, rgba(0,212,255,1) 100%);            }
+
+        archer-card-fan {
+            position: fixed;
+            inset: 0px;
+            top: 10vh;
+            bottom: 4em;
         }
         archer-card {
-            position: absolute;
-            width: 15vw;
-            height: 15vh;
-            border: 1px solid red;
+            height: 38vh;
         }
-
-        .absolute-container {
-            position: absolute;
+        h1 {
+            position: fixed;
+            top: 60vh;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            text-align: center;
+            font-family: "adorn-engraved", sans-serif;
+            font-size: 5vh;
+            font-weight: 400;
+            font-style: normal;
         }
-
-        .container {
+        .button-container {
+            position: fixed;
+            top: 70vh;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            text-align: center;
+        }
+        button {
+            font-family: "adorn-engraved", sans-serif;
+            font-size: 3vh;
+        }
+        img {
             position: relative;
-            border: 1px solid black;
-            left: 25vw;
-            width: 50vw;
-            height: 50vh;
-            top: 25vh;
+            top: 3px;
+            height: 5vh;
         }
     </style>
-    <script type="module" src="archer-ui.js"></script>
+    <script type="module" src="/archer-ui.js"></script>
+    <script>
+        const suits = ['clubs', 'hearts', 'spades', 'diamonds'];
+        const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
+        const deck = suits.flatMap(suit => values.map(value => ({suit, value})))
+            //.map(v => ({v, s: Math.random()}))
+            //.sort((a,b) => a.s - b.s)
+            //.map(({v}) => v)
+        ;
+
+
+        function pickCards(numberOfCards) {
+            const cards  = deck.splice(0, numberOfCards);
+            deck.push(...cards);
+            return cards;
+        }
+
+        function pickNewCards() {
+
+            const pause = 75;
+            const cardfan = document.querySelector('archer-card-fan');
+
+            function addCard() {
+                const [card] = pickCards(1);
+                const cardElement = document.createElement('archer-card')
+                cardElement.setAttribute("suit", card.suit);
+                cardElement.setAttribute("value", card.value);
+                cardfan.appendChild(cardElement);
+                if (cardfan.querySelectorAll('archer-card').length < 13) {
+                    setTimeout(addCard, pause);
+                }
+                else {
+                    setTimeout(pickNewCards, pause * 30);
+                }
+            }
+
+            function removeCard() {
+                const cardElement = cardfan.querySelector('archer-card');
+                if (cardElement) {
+                    cardElement.remove();
+                    setTimeout(removeCard, pause);
+                }
+                else {
+                    setTimeout(addCard, pause);
+                }
+            }
+
+            setTimeout(removeCard, pause);
+        }
+    </script>
 </head>
 <body>
-    <div class="absolute-container">
-        <div class="container">
-            <archer-card suit="clubs" value="K"></archer-card>
-            <archer-card suit="hearts" value="K"></archer-card>
-            <archer-card suit="spades" value="K"></archer-card>
-            <archer-card suit="diamonds" value="K"></archer-card>
-        </div>
-    </div>
-    <archer-frame width="2.5vw" height="2.5vh" color="blue"/>
+<archer-card-fan></archer-card-fan>
+<h1><img src="/assets/archer-logo.svg"> ArcherUI Showcase <img src="/assets/archer-logo.svg"></h1>
+<script>pickNewCards();</script>
 </body>
 </html>
