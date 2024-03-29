@@ -1,0 +1,43 @@
+<html>
+<head>
+    <style>
+
+        body {
+            overflow: hidden;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+            background: black;
+        }
+        body > div {
+            display: block;
+            width: 100vw;
+        }
+
+        div {
+
+            height: 1vh;
+            border: 0px;
+        }
+
+        div > div {
+            display: inline-block;
+            width: 1vw;
+        }
+    </style>
+</head>
+<body>
+    <script>
+
+        for (let i = 0; i < 100; i++) {
+            const row = document.createElement("div");
+            for (let j = 0; j <100; j++) {
+                const cell = document.createElement("div");
+                cell.style.backgroundColor = `rgb(${Math.random()*255},0,${Math.random()*255})`;
+                row.appendChild(cell)
+            }
+            document.body.appendChild(row);
+        }
+    </script>
+</body>
+</html>

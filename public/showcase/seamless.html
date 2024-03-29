@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seamless</title>
+    <style>
+
+      html, body {
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+      }
+
+      body {
+          background-repeat: revert;
+      }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        const style = document.createElement("style");
+        const urlParams = new URLSearchParams(window.location.search);
+        style.innerHTML = `
+                body {
+                    background-image: url("/assets/archer-seamless-${urlParams.get('type') || 'a'}.webp");
+                }
+            `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>

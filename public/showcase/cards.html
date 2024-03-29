@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archer UI Showcase</title>
+    <style>
+
+        :root {
+            --card-width: calc((max(100%, calc(100px + 2vw) ) / 13) - 2vw);
+            --card-height: calc((max(100vh, calc(100px + 2vh) ) / 4) - 2vh);
+        }
+
+        body {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        archer-card {
+            display: inline-block;
+            width: var(--card-width);
+            height: var(--card-height);
+            margin: 1vh 1vw;
+        }
+
+
+        html, body { width: 100%; height: 100%; padding: 0; margin: 0; }
+        div {
+            white-space: nowrap;
+        }
+
+        archer-frame {
+            position: absolute;
+            inset: 0px;
+        }
+
+    </style>
+    <script type="module" src="/archer-ui.js"></script>
+</head>
+<body>
+        <script>
+            const suits = ['clubs', 'hearts', 'spades', 'diamonds'];
+            const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
+            const deck = suits.flatMap(suit => values.map(value => ({suit, value})))
+                .map(v => ({v, s: Math.random()}))
+                .sort((a,b) => a.s - b.s)
+                .map(({v}) => v)
+            ;
+
+            const piles = [
+                deck.slice(0, 13),
+                deck.slice(13, 26),
+                deck.slice(26, 39),
+                deck.slice(39,52)
+            ]
+
+            piles.forEach(pile => {
+                const div = document.createElement('div');
+                div.style.display = 'inline-block';
+                div.style.width = 'calc((var(--card-width) + 2vw) * 13)';
+                pile.forEach(card => {
+                    const cardElement = document.createElement('archer-card');
+                    cardElement.setAttribute("suit", card.suit);
+                    cardElement.setAttribute("value", card.value);
+                    div.appendChild(cardElement);
+                });
+                document.body.appendChild(div);
+            });
+
+            const frame = document.createElement('archer-frame');
+            frame.setAttribute("width", "75px");
+            frame.setAttribute("height", "75px");
+            frame.setAttribute("color", "blue");
+            frame.setAttribute("src", "/assets/archer-seamless-e.webp");
+            document.body.appendChild(frame);
+        </script>
+</body>
+</html>
