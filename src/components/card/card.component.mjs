@@ -32,11 +32,6 @@ const cardId = (suit, value) => {
     return CARD_IDS[suit][value];
 }
 
-const HTML = `
-    <style>
-    </style>
-`;
-
 const CARD_WIDTH = 216;
 const CARD_HEIGHT = 268;
 
@@ -159,7 +154,7 @@ class ArcherCard extends HTMLElement {
 
 
         const componentStyle = document.createElement('style');
-        componentStyle.innerHTML = ':host { display: inline; width: 350px; }';
+        componentStyle.innerHTML = ':host { display: block;}';
 
         members(this).shadowRoot.appendChild(componentStyle);
         members(this).shadowRoot.appendChild(svg);

@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Archer UI</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <script type="module" src="/archer-ui.js"></script>
+    </head>
+    <body>
+    <div>
+        <archer-card></archer-card>
+    </div>
+        <script>
+
+            const params = new URLSearchParams(window.location.search);
+            const suit = params.get('suit') || 'spades';
+            const value = params.get('value') || 'A';
+
+            const card = document.querySelector('archer-card');
+            card.setAttribute("suit", suit);
+            card.setAttribute("value", value);
+
+        </script>
+    </body>
+</html>

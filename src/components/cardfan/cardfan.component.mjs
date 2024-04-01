@@ -13,14 +13,23 @@ const style = `
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
-          padding: 20px;
+          padding: 0px;
           justify-content: center;
         }
         
         ::slotted(archer-card) {
             position: absolute;
-            transition: transform 0.5s ease;
+            -webkit-transition: -webkit-transform 0.5s ease;
+            -moz-transition: transform 0.5s ease;
+            -o-transition: transform 0.5s ease;
+            transition: transform 0.5s ease;     
+            pointer-events: all;       
         }
+        
+        ::slotted(archer-card:hover) {
+            top: -4vh;
+        }
+
     </style>
 `;
 

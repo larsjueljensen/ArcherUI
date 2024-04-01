@@ -36,7 +36,6 @@ const getFrameShadow = (instance) => {
 
 const updateFrame = (instance) => {
     if (members(instance).shadowRoot) {
-
         const frame = getFrame(instance);
         frame.style.clipPath = calculatePolygon(members(instance).width, members(instance).height);
         frame.style.backgroundImage = `url(${members(instance).src})`;
@@ -66,12 +65,15 @@ const HTML = `
         overflow: hidden;
         background-repeat: repeat;
         background-size: 512px;
+        transition: clip-path 0.5s ease;
     }
     
     #frame-shadow {
         position: absolute;
         box-shadow: inset 0px 0px 8px 8px rgba(0,0,0,0.5);
         border: 2px inset rgba(0,0,0,1);
+        transition: inset 0.5s ease;
+        pointer-events: none;
     }
 </style>
 <div id="component">
@@ -147,7 +149,6 @@ class ArcherFrame extends HTMLElement {
         members(this).src = src;
         updateFrame(this);
     }
-
 
 }
 
