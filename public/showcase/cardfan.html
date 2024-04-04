@@ -1,14 +1,9 @@
-<html>
+<html lang="en">
     <head>
         <title>Cardfan - Archer UI Showcase</title>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <style is="archer-font-face" family="adorn-engraved"></style>
         <style>
-            @font-face {
-                font-family:"adorn-engraved";
-                src:url("/assets/adorn-font.woff2") format("woff2"),url("/assets/adorn-font.woff") format("woff"),url("/assets/adorn-font.ot") format("opentype");
-                font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
-            }
-
             html, body { width: 100%; height: 100%; padding: 0; margin: 0; }
 
             body {
@@ -17,37 +12,44 @@
 
             archer-card-fan {
                 position: fixed;
-                inset: 0px;
+                inset: 0;
                 top: 10vh;
                 bottom: 4em;
             }
+
             archer-card {
                 height: 38vh;
+                filter: drop-shadow(-1px 5px rgba(0,0,0, 0.25));
             }
+
             h1 {
                 position: fixed;
                 top: 60vh;
-                left: 0px;
-                right: 0px;
-                bottom: 0px;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 text-align: center;
                 font-family: "adorn-engraved", sans-serif;
                 font-size: 5vh;
                 font-weight: 400;
                 font-style: normal;
+                pointer-events: none;
             }
-            .button-container {
+
+            #menu {
+                display: flex;
+                justify-content: center;
                 position: fixed;
-                top: 70vh;
-                left: 0px;
-                right: 0px;
-                bottom: 0px;
+                top: 75vh;
+                left: 0;
+                right: 0;
                 text-align: center;
             }
-            button {
-                font-family: "adorn-engraved", sans-serif;
-                font-size: 3vh;
+
+            #menu > div {
+                width: 400px;
             }
+
             img {
                 position: relative;
                 top: 3px;
@@ -56,58 +58,89 @@
         </style>
         <script type="module" src="/archer-ui.js"></script>
         <script>
-            const suits = ['clubs', 'hearts', 'spades', 'diamonds'];
-            const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
-            const deck = suits.flatMap(suit => values.map(value => ({suit, value})))
-                .map(v => ({v, s: Math.random()}))
-                .sort((a,b) => a.s - b.s)
-                .map(({v}) => v)
-            ;
 
-
-            function pickCards(numberOfCards) {
-                const cards  = deck.splice(0, numberOfCards);
-                deck.push(...cards);
-                return cards;
-            }
-
-            function pickNewCards() {
+            function pickNewCards(cardfan) {
 
                 const pause = 75;
-                const cardfan = document.querySelector('archer-card-fan');
+                const deck = document.querySelector('archer-card-deck');
+                const shuffleDeck = document.getElementById('shuffleDeck');
 
                 function addCard() {
-                    const [card] = pickCards(1);
-                    const cardElement = document.createElement('archer-card')
-                    cardElement.setAttribute("suit", card.suit);
-                    cardElement.setAttribute("value", card.value);
-                    cardfan.appendChild(cardElement);
-                    if (cardfan.querySelectorAll('archer-card').length < 13) {
-                        setTimeout(addCard, pause);
-                    }
-                    else {
-                        //setTimeout(pickNewCards, pause * 30);
-                    }
-                }
-
-                function removeCard() {
-                    const cardElement = cardfan.querySelector('archer-card');
-                    if (cardElement) {
-                        cardElement.remove();
-                        setTimeout(removeCard, pause);
-                    }
-                    else {
-                        setTimeout(addCard, pause);
+                    try {
+                        cardfan.addCard(deck.nextCard());
+                        if (deck.numCards <= 3) {
+                            deck.init();
+                            if (shuffleDeck.checked) { deck.shuffle(); }
+                        }
+                        if (cardfan.numCards < 13) {
+                            setTimeout(addCard, pause);
+                        }
+                    } catch (err) {
+                        console.error(err);
                     }
                 }
 
-                setTimeout(removeCard, pause);
+                setTimeout(addCard, pause);
             }
         </script>
     </head>
     <body>
-        <archer-card-fan></archer-card-fan>
-        <h1><img src="/assets/archer-logo.svg"> ArcherUI Showcase <img src="/assets/archer-logo.svg"></h1>
-        <script>pickNewCards();</script>
+
+        <archer-card-deck id="deck" jokers="true"></archer-card-deck>
+        <archer-card-fan id="cardfan"></archer-card-fan>
+        <h1></h1>
+        <div id="menu">
+            <div>Include jokers <input id="includeJokers" type="checkbox" checked></div>
+            <div>Shuffle cards <input id="shuffleDeck" type="checkbox" checked></div>
+        </div>
+
+        <script type="module">
+
+            archer.whenReady().then(()  => {
+
+                document.querySelector('h1').innerHTML =
+                    '<img src="/assets/archer-logo.svg"> ArcherUI Showcase <img src="/assets/archer-logo.svg">';
+
+                const deck = document.getElementById('deck');
+                const includeJokers = document.getElementById('includeJokers');
+                const shuffleDeck = document.getElementById('shuffleDeck');
+                const cardfan = document.getElementById('cardfan');
+
+                deck.shuffle();
+
+                shuffleDeck.addEventListener('change', (event) => {
+                    deck.clear();
+                    deck.init();
+                    if (event.target.checked) { deck.shuffle(); }
+                    cardfan.clear();
+                    pickNewCards(cardfan);
+                });
+
+                includeJokers.addEventListener('change', (event) => {
+                    deck.clear();
+                    deck.setAttribute('jokers', String(event.target.checked));
+                    deck.init();
+                    if (shuffleDeck.checked) { deck.shuffle(); }
+                    cardfan.clear();
+                    pickNewCards(cardfan);
+                });
+
+
+                // Listen for cardselect event
+                cardfan.addEventListener('cardselect', (event) => {
+
+                    // Remove the selected card from the fan
+                    cardfan.removeCard(event.detail);
+
+                    // If the fan does not have any more cards
+                    if (cardfan.children.length <= 0) {
+                        pickNewCards(cardfan);
+                    }
+                });
+
+                pickNewCards(cardfan);
+            });
+
+        </script>
     </body>
 </html>

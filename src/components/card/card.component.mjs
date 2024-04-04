@@ -25,6 +25,9 @@ const CARD_IDS = {
     diamonds: {
         A: 'DIAMOND-1', 2: 'DIAMOND-2', 3: 'DIAMOND-3', 4: 'DIAMOND-4', 5: 'DIAMOND-5', 6: 'DIAMOND-6', 7: 'DIAMOND-7', 8: 'DIAMOND-8',
         9: 'DIAMOND-9', 10: 'DIAMOND-10', J: 'DIAMOND-11-JACK', Q: 'DIAMOND-12-QUEEN', K: 'DIAMOND-13-KING'
+    },
+    joker: {
+        1: 'JOKER-1', 2: 'JOKER-2', 3: 'JOKER-3'
     }
 };
 
@@ -33,7 +36,7 @@ const cardId = (suit, value) => {
 }
 
 const CARD_WIDTH = 216;
-const CARD_HEIGHT = 268;
+const CARD_HEIGHT = 268.2;
 
 const SVGSTYLE = `
   .cls-1 { font-family: ArialMT, Arial; font-size: 24.0766px; }
@@ -45,58 +48,61 @@ const SVGSTYLE = `
   .cls-7 { fill: #100f08; }
   .cls-8 { fill: #c8102e; }
   .cls-9 { fill: #ffcd00; }  
-  #CLUB-1 { transform: translate(-${CARD_WIDTH * 0}px, 0px); }
-  #CLUB-2 { transform: translate(-${CARD_WIDTH * 1}px, 0px); }
-  #CLUB-3 { transform: translate(-${CARD_WIDTH * 2}px, 0px); }
-  #CLUB-4 { transform: translate(-${CARD_WIDTH * 3}px, 0px); }
-  #CLUB-5 { transform: translate(-${CARD_WIDTH * 4}px, 0px); }
-  #CLUB-6 { transform: translate(-${CARD_WIDTH * 5}px, 0px); }
-  #CLUB-7 { transform: translate(-${CARD_WIDTH * 6}px, 0px); }
-  #CLUB-8 { transform: translate(-${CARD_WIDTH * 7}px, 0px); }
-  #CLUB-9 { transform: translate(-${CARD_WIDTH * 8}px, 0px); }
-  #CLUB-10 { transform: translate(-${CARD_WIDTH * 9}px, 0px); }
-  #CLUB-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, 0px); }
-  #CLUB-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, 0px); }
-  #CLUB-13-KING { transform: translate(-${CARD_WIDTH * 12}px, 0px); }
-  #HEART-1 { transform: translate(-${CARD_WIDTH * 0}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-2 { transform: translate(-${CARD_WIDTH * 1}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-3 { transform: translate(-${CARD_WIDTH * 2}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-4 { transform: translate(-${CARD_WIDTH * 3}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-5 { transform: translate(-${CARD_WIDTH * 4}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-6 { transform: translate(-${CARD_WIDTH * 5}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-7 { transform: translate(-${CARD_WIDTH * 6}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-8 { transform: translate(-${CARD_WIDTH * 7}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-9 { transform: translate(-${CARD_WIDTH * 8}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-10 { transform: translate(-${CARD_WIDTH * 9}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${CARD_HEIGHT * 1}px); }
-  #HEART-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${CARD_HEIGHT * 1}px); }
-  #SPADE-1 { transform: translate(-${CARD_WIDTH * 0}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-2 { transform: translate(-${CARD_WIDTH * 1}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-3 { transform: translate(-${CARD_WIDTH * 2}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-4 { transform: translate(-${CARD_WIDTH * 3}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-5 { transform: translate(-${CARD_WIDTH * 4}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-6 { transform: translate(-${CARD_WIDTH * 5}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-7 { transform: translate(-${CARD_WIDTH * 6}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-8 { transform: translate(-${CARD_WIDTH * 7}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-9 { transform: translate(-${CARD_WIDTH * 8}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-10 { transform: translate(-${CARD_WIDTH * 9}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${CARD_HEIGHT * 2}px); }
-  #SPADE-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${CARD_HEIGHT * 2}px); }
-  #DIAMOND-1 { transform: translate(-${CARD_WIDTH * 0}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-2 { transform: translate(-${CARD_WIDTH * 1}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-3 { transform: translate(-${CARD_WIDTH * 2}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-4 { transform: translate(-${CARD_WIDTH * 3}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-5 { transform: translate(-${CARD_WIDTH * 4}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-6 { transform: translate(-${CARD_WIDTH * 5}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-7 { transform: translate(-${CARD_WIDTH * 6}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-8 { transform: translate(-${CARD_WIDTH * 7}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-9 { transform: translate(-${CARD_WIDTH * 8}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-10 { transform: translate(-${CARD_WIDTH * 9}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${CARD_HEIGHT * 3}px); }
-  #DIAMOND-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${CARD_HEIGHT * 3}px); }
+  #CLUB-1 { transform: translate(-${CARD_WIDTH * 0}px, 1px); }
+  #CLUB-2 { transform: translate(-${CARD_WIDTH * 1}px, 1px); }
+  #CLUB-3 { transform: translate(-${CARD_WIDTH * 2}px, 1px); }
+  #CLUB-4 { transform: translate(-${CARD_WIDTH * 3}px, 1px); }
+  #CLUB-5 { transform: translate(-${CARD_WIDTH * 4}px, 1px); }
+  #CLUB-6 { transform: translate(-${CARD_WIDTH * 5}px, 1px); }
+  #CLUB-7 { transform: translate(-${CARD_WIDTH * 6}px, 1px); }
+  #CLUB-8 { transform: translate(-${CARD_WIDTH * 7}px, 1px); }
+  #CLUB-9 { transform: translate(-${CARD_WIDTH * 8}px, 1px); }
+  #CLUB-10 { transform: translate(-${CARD_WIDTH * 9}px, 1px); }
+  #CLUB-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, 1px); }
+  #CLUB-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, 1px); }
+  #CLUB-13-KING { transform: translate(-${CARD_WIDTH * 12}px, 1px); }
+  #HEART-1 { transform: translate(-${CARD_WIDTH * 0}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-2 { transform: translate(-${CARD_WIDTH * 1}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-3 { transform: translate(-${CARD_WIDTH * 2}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-4 { transform: translate(-${CARD_WIDTH * 3}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-5 { transform: translate(-${CARD_WIDTH * 4}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-6 { transform: translate(-${CARD_WIDTH * 5}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-7 { transform: translate(-${CARD_WIDTH * 6}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-8 { transform: translate(-${CARD_WIDTH * 7}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-9 { transform: translate(-${CARD_WIDTH * 8}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-10 { transform: translate(-${CARD_WIDTH * 9}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #HEART-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${-1 + CARD_HEIGHT * 1}px); }
+  #SPADE-1 { transform: translate(-${CARD_WIDTH * 0}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-2 { transform: translate(-${CARD_WIDTH * 1}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-3 { transform: translate(-${CARD_WIDTH * 2}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-4 { transform: translate(-${CARD_WIDTH * 3}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-5 { transform: translate(-${CARD_WIDTH * 4}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-6 { transform: translate(-${CARD_WIDTH * 5}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-7 { transform: translate(-${CARD_WIDTH * 6}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-8 { transform: translate(-${CARD_WIDTH * 7}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-9 { transform: translate(-${CARD_WIDTH * 8}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-10 { transform: translate(-${CARD_WIDTH * 9}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #SPADE-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${-1 + CARD_HEIGHT * 2}px); }
+  #DIAMOND-1 { transform: translate(-${CARD_WIDTH * 0}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-2 { transform: translate(-${CARD_WIDTH * 1}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-3 { transform: translate(-${CARD_WIDTH * 2}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-4 { transform: translate(-${CARD_WIDTH * 3}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-5 { transform: translate(-${CARD_WIDTH * 4}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-6 { transform: translate(-${CARD_WIDTH * 5}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-7 { transform: translate(-${CARD_WIDTH * 6}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-8 { transform: translate(-${CARD_WIDTH * 7}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-9 { transform: translate(-${CARD_WIDTH * 8}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-10 { transform: translate(-${CARD_WIDTH * 9}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-11-JACK { transform: translate(-${CARD_WIDTH * 10}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-12-QUEEN { transform: translate(-${CARD_WIDTH * 11}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #DIAMOND-13-KING { transform: translate(-${CARD_WIDTH * 12}px, -${-1 + CARD_HEIGHT * 3}px); }
+  #JOKER-1 { transform: translate(-${CARD_WIDTH * 0}px, -${55.542 + CARD_HEIGHT * 4}px); }
+  #JOKER-2 { transform: translate(-${CARD_WIDTH * 1}px, -${55.542 + CARD_HEIGHT * 4}px); }
+  #JOKER-3 { transform: translate(-${CARD_WIDTH * 2}px, -${55.542 + CARD_HEIGHT * 4}px); }
 `;
 
 class ArcherCard extends HTMLElement {

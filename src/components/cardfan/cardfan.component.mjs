@@ -34,17 +34,25 @@ const html = `
     <slot></slot>
 `;
 
+const onCardSelect = (event) => {
+    event.stopPropagation();
+    const card = event.target;
+    card.fan.dispatchEvent(new CustomEvent("cardselect", {detail: card}));
+}
+
 const onCardEnter = (event) => {
     const card = event.target;
     const radians = card.angle * (Math.PI / 180);
-    const dx = Math.sin(radians) * 40;
-    const dy = -Math.cos(radians) * 40;
+    const dx = Math.sin(radians) * 4 * window.innerHeight / 100;
+    const dy = -Math.cos(radians) * 4 * window.innerHeight / 100;
     card.style.transform = `translate(${dx}px, ${dy}px) rotate(${card.angle}deg)`;
+    card.addEventListener('click', onCardSelect);
 }
 
 const onCardLeave = (event) => {
     const card = event.target;
     card.style.transform = `rotate(${card.angle}deg)`;
+    card.removeEventListener('click', onCardSelect);
 }
 
 const updateCardPositions = (cardfanElement) => {
@@ -53,6 +61,7 @@ const updateCardPositions = (cardfanElement) => {
     const startAngle = (cards.length - 1) * (- (spreadAngle / 2));
     cards.forEach((card, index) => {
         const angle = startAngle + (index * spreadAngle);
+        card.fan = cardfanElement;
         card.angle = angle;
         card.style.transform = `rotate(${angle}deg)`;
         card.style.transformOrigin = '50% 160%';
@@ -88,6 +97,23 @@ class ArcherCardFan extends HTMLElement {
 
         members(this).observer.observe(this, {childList: true});
     }
+
+    get numCards() {
+        return this.querySelectorAll('archer-card').length;
+    }
+
+    addCard(card) {
+        this.appendChild(card);
+    }
+
+    removeCard(card) {
+        this.removeChild(card);
+    }
+
+    clear() {
+        this.replaceChildren();
+    }
+
 }
 
 customElements.define('archer-card-fan', ArcherCardFan);

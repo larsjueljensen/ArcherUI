@@ -37,7 +37,11 @@ const config = {
                 use: ['svg-inline-loader']
             },
             {
-                test: /\.(eot|ttf|woff|woff2|png|jpg|gif)$/i,
+                test: /\.woff2$/,
+                type: 'asset/inline'
+            },
+            {
+                test: /\.(eot|ttf|woff|png|jpg|gif)$/i,
                 type: 'asset',
             }
 
