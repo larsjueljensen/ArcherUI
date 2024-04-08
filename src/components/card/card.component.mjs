@@ -1,13 +1,14 @@
 import cardData from './assets/cards.svg'
-
-const svgNamespaceURI = "http://www.w3.org/2000/svg";
-
 const instanceMembers = new WeakMap();
 const members = (instance) => {
     let members = instanceMembers.get(instance);
     if (members) return members;
     return instanceMembers.set(instance, {}).get(instance);
 }
+
+const svgNamespaceURI = "http://www.w3.org/2000/svg";
+const hiddenSvg = document.createElement('div');
+hiddenSvg.innerHTML = `${cardData}`;
 
 const CARD_IDS = {
     clubs: {
@@ -30,14 +31,12 @@ const CARD_IDS = {
         1: 'JOKER-1', 2: 'JOKER-2', 3: 'JOKER-3'
     }
 };
-
 const cardId = (suit, value) => {
     return CARD_IDS[suit][value];
 }
 
 const CARD_WIDTH = 216;
 const CARD_HEIGHT = 268.2;
-
 const SVGSTYLE = `
   .cls-1 { font-family: ArialMT, Arial; font-size: 24.0766px; }
   .cls-1, .cls-2 { isolation: isolate; }
@@ -131,15 +130,16 @@ class ArcherCard extends HTMLElement {
         const value = members(this).value;
         const gCard = members(this).gCard;
         if (suit && value && gCard) {
-            gCard.replaceChildren(members(this).hiddenSvg.querySelector(`#${cardId(suit, value)}`).cloneNode(true));
+            gCard.replaceChildren(
+                hiddenSvg
+                    .querySelector(`#${cardId(suit, value)}`)
+                    .cloneNode(true));
         }
     }
 
     connectedCallback() {
 
         members(this).shadowRoot = this.attachShadow({mode: "closed"});
-        members(this).hiddenSvg = document.createElement('div');
-        members(this).hiddenSvg.innerHTML = `${cardData}`;
 
         const svg = document.createElementNS(svgNamespaceURI, "svg");
         const defs = document.createElementNS(svgNamespaceURI, "defs");
@@ -150,11 +150,12 @@ class ArcherCard extends HTMLElement {
         style.innerHTML = SVGSTYLE;
         defs.appendChild(style);
         svg.appendChild(defs);
-        svg.style.position = 'relative';
-        svg.style.inset = '0px';
+        svg.style.width = '100%';
+        svg.style.height = '100%';
         svg.setAttribute("viewBox", "0 0 180 252")
         svg.setAttribute("preserveAspectRatio", "xMidYMid meet")
         svg.appendChild(gCard);
+
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
 
@@ -169,13 +170,7 @@ class ArcherCard extends HTMLElement {
         this.updateFace();
     }
 
-
 }
 
 customElements.define('archer-card', ArcherCard);
 window.ArcherCard = ArcherCard;
-
-
-class Test {
-
-}

@@ -52,6 +52,10 @@ class ArcherCardDeck extends HTMLElement {
         members(this).useJokers = toBoolean(newValue);
     }
 
+    get containsJokers() {
+        return members(this).useJokers;
+    }
+
     hasMoreCards() {
         const cards = members(this).cards;
         if (cards) {

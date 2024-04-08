@@ -48,6 +48,7 @@
 
         archer-card {
             height: 70%;
+            filter: drop-shadow(-1px 5px rgba(0,0,0, 0.25));
         }
 
         archer-frame {
@@ -84,7 +85,7 @@
                 cardElement.setAttribute("suit", card.suit);
                 cardElement.setAttribute("value", card.value);
                 cardfan.appendChild(cardElement);
-                if (cardfan.querySelectorAll('archer-card').length < 13) {
+                if (cardfan.querySelectorAll('archer-card').length < 26) {
                     setTimeout(addCard, pause);
                 }
                 else {

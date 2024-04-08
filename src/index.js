@@ -18,6 +18,9 @@ const archer = {
     whenReady: async function () {
         return Promise.any(components.map(component => customElements.whenDefined(component.tagName)));
     }
-}
+};
 
-window.archer = archer;
+((win) => {
+    win.archer = archer;
+})(window);
+

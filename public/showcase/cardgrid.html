@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>Cardfan - Archer UI Showcase</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module" src="/archer-ui.js"></script>
+    <style>
+        body {
+            overflow: auto;
+        }
+        #container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 4px;
+        }
+        .row {
+            display: flex;
+            flex: 1 1 0;
+            min-width: 0;
+            min-height: 0;
+            gap: 4px;
+        }
+        .column {
+            display: flex;
+            flex: 1 1 0;
+            min-width: 0;
+            min-height: 0;
+        }
+        .column > * {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        body {
+            background: rgb(91,89,122);
+            background: linear-gradient(315deg, rgba(91,89,122,1) 0%, rgba(131,219,119,1) 47%, rgba(0,212,255,1) 100%);
+        }
+
+    </style>
+</head>
+<body>
+    <archer-card-deck id="deck" jokers="true"></archer-card-deck>
+        <div id="container"></div>
+
+    <script type="module">
+
+        archer.whenReady().then(() => {
+
+            const createRow = () => {
+                const row = document.createElement('div');
+                row.classList.add('row');
+                return row;
+            }
+
+            const createColumn = () => {
+                const column = document.createElement('div');
+                column.classList.add('column');
+                return column;
+            }
+
+            const deck = document.getElementById("deck");
+            deck.init();
+
+            const container = document.getElementById("container");
+            const addCard = (row, createCard) => {
+                const column = createColumn();
+                if (createCard) column.appendChild(deck.nextCard());
+                row.appendChild(column);
+            }
+
+            for (let j = 0; j < 4; j++) {
+                const row = createRow();
+                for (let i = 0; i < 13; i++) {
+                    addCard(row, true);
+                }
+                container.appendChild(row);
+            }
+
+            if (deck.getAttribute("jokers")) {
+                const row = createRow();
+                for (let i=0; i<13; i++) {
+                    addCard(row, i<3);
+                }
+                container.appendChild(row);
+            }
+
+        });
+    </script>
+</body>
+</html>

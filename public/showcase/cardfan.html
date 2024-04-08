@@ -8,7 +8,8 @@
 
             body {
                 background: rgb(91,89,122);
-                background: linear-gradient(315deg, rgba(91,89,122,1) 0%, rgba(131,219,119,1) 47%, rgba(0,212,255,1) 100%);            }
+                background: linear-gradient(315deg, rgba(91,89,122,1) 0%, rgba(131,219,119,1) 47%, rgba(0,212,255,1) 100%);
+            }
 
             archer-card-fan {
                 position: fixed;
@@ -22,7 +23,7 @@
                 filter: drop-shadow(-1px 5px rgba(0,0,0, 0.25));
             }
 
-            h1 {
+            #showcase {
                 position: fixed;
                 top: 60vh;
                 left: 0;
@@ -88,7 +89,7 @@
 
         <archer-card-deck id="deck" jokers="true"></archer-card-deck>
         <archer-card-fan id="cardfan"></archer-card-fan>
-        <h1></h1>
+        <div id="showcase"></div>
         <div id="menu">
             <div>Include jokers <input id="includeJokers" type="checkbox" checked></div>
             <div>Shuffle cards <input id="shuffleDeck" type="checkbox" checked></div>
@@ -98,7 +99,7 @@
 
             archer.whenReady().then(()  => {
 
-                document.querySelector('h1').innerHTML =
+                document.querySelector('#showcase').innerHTML =
                     '<img src="/assets/archer-logo.svg"> ArcherUI Showcase <img src="/assets/archer-logo.svg">';
 
                 const deck = document.getElementById('deck');
